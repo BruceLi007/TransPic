@@ -130,7 +130,8 @@ class AppController(QObject):
         self._overlay.region_selected.connect(self._on_region_selected)
         self._overlay.cancelled.connect(self._cancel_screenshot)
         self._overlay.show()
-        self._overlay.setFocus()
+        self._overlay.activateWindow()
+        self._overlay.raise_()
 
     def _on_region_selected(self, pil_image):
         self._cleanup_overlay()

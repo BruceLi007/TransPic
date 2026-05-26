@@ -11,7 +11,7 @@ class SettingsDialog(QDialog):
     def __init__(self, config: AppConfig, parent=None):
         super().__init__(parent)
         self.setWindowTitle("TransPic 设置")
-        self.setFixedSize(440, 380)
+        self.setFixedSize(480, 420)
         self.setStyleSheet("QDialog { background: #fff; }")
         self._config = config
         self._result_config = None
@@ -21,43 +21,46 @@ class SettingsDialog(QDialog):
     def _input_style(self):
         return (
             "QLineEdit {"
-            "  border: 1px solid #e0e0e0; border-radius: 6px; padding: 7px 10px;"
-            "  font-size: 13px; background: #fafafa; color: #333;"
+            "  border: 1px solid #E2E8F0; border-radius: 8px;"
+            "  padding: 10px 14px; font-size: 13px;"
+            "  background: #F8FAFC; color: #1E293B;"
             "}"
-            "QLineEdit:focus { border-color: #4a6cf7; background: #fff; }"
-        )
-
-    def _combo_style(self):
-        return (
-            "QComboBox {"
-            "  border: 1px solid #e0e0e0; border-radius: 6px; padding: 7px 10px;"
-            "  font-size: 13px; background: #fafafa; color: #333;"
+            "QLineEdit:focus {"
+            "  border-color: #A78BFA; background: #fff;"
+            "  box-shadow: 0 0 0 3px rgba(124,58,237,0.1);"
             "}"
-            "QComboBox:focus { border-color: #4a6cf7; }"
         )
 
     def _setup_ui(self):
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(28, 24, 28, 20)
+        layout.setContentsMargins(32, 28, 32, 24)
         layout.setSpacing(0)
 
         # title
-        title = QLabel("⚙  设置")
-        title.setStyleSheet("font-size: 16px; font-weight: bold; color: #1a1a1a; padding-bottom: 16px;")
+        title = QLabel("TransPic 设置")
+        title.setStyleSheet(
+            "font-size: 18px; font-weight: bold; color: #1E293B;"
+            "padding-bottom: 4px;"
+        )
         layout.addWidget(title)
+
+        subtitle = QLabel("配置 API 连接和快捷键")
+        subtitle.setStyleSheet("color: #94A3B8; font-size: 12px; padding-bottom: 18px;")
+        layout.addWidget(subtitle)
 
         # separator
         sep = QFrame()
         sep.setFrameShape(QFrame.HLine)
-        sep.setStyleSheet("background: #eee; border: none; max-height: 1px;")
+        sep.setStyleSheet("background: #E2E8F0; border: none; max-height: 1px;")
         layout.addWidget(sep)
-        layout.addSpacing(16)
+        layout.addSpacing(20)
 
         form = QFormLayout()
-        form.setSpacing(12)
+        form.setSpacing(14)
         form.setLabelAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        form.setContentsMargins(0, 0, 0, 0)
 
-        label_style = "color: #555; font-size: 13px;"
+        label_style = "color: #475569; font-size: 13px; font-weight: 500;"
 
         # API Endpoint
         self._endpoint = QLineEdit()
@@ -88,16 +91,16 @@ class SettingsDialog(QDialog):
         self._hotkey = QLineEdit()
         self._hotkey.setPlaceholderText("alt+shift+t")
         self._hotkey.setStyleSheet(self._input_style())
-        lbl = QLabel("热键")
+        lbl = QLabel("快捷键")
         lbl.setStyleSheet(label_style)
         form.addRow(lbl, self._hotkey)
 
         layout.addLayout(form)
-        layout.addSpacing(20)
+        layout.addSpacing(22)
 
         # hint
-        hint = QLabel("支持所有 OpenAI 兼容接口（OpenAI / DeepSeek / 硅基流动 / 通义千问 等）")
-        hint.setStyleSheet("color: #aaa; font-size: 11px;")
+        hint = QLabel("支持所有 OpenAI 兼容接口 (OpenAI / DeepSeek / 硅基流动 / 通义千问 等)")
+        hint.setStyleSheet("color: #94A3B8; font-size: 11px;")
         hint.setWordWrap(True)
         layout.addWidget(hint)
 
@@ -105,27 +108,42 @@ class SettingsDialog(QDialog):
 
         # buttons
         btn_row = QHBoxLayout()
-        btn_row.setSpacing(10)
+        btn_row.setSpacing(12)
         btn_row.addStretch()
 
         btn_cancel = QPushButton("取消")
-        btn_cancel.setFixedSize(80, 34)
+        btn_cancel.setFixedSize(96, 36)
         btn_cancel.setCursor(Qt.PointingHandCursor)
         btn_cancel.setStyleSheet(
-            "QPushButton { background: #f5f5f5; border: 1px solid #e0e0e0;"
-            "  border-radius: 6px; font-size: 13px; color: #666; }"
-            "QPushButton:hover { background: #eee; }"
+            "QPushButton {"
+            "  background: #fff; border: 1px solid #E2E8F0;"
+            "  border-radius: 8px; font-size: 13px; color: #64748B;"
+            "}"
+            "QPushButton:hover {"
+            "  background: #F8FAFC; border-color: #CBD5E1; color: #475569;"
+            "}"
         )
         btn_cancel.clicked.connect(self.reject)
         btn_row.addWidget(btn_cancel)
 
         btn_save = QPushButton("保存")
-        btn_save.setFixedSize(80, 34)
+        btn_save.setFixedSize(96, 36)
         btn_save.setCursor(Qt.PointingHandCursor)
         btn_save.setStyleSheet(
-            "QPushButton { background: #4a6cf7; border: none;"
-            "  border-radius: 6px; font-size: 13px; color: #fff; font-weight: bold; }"
-            "QPushButton:hover { background: #3b5de7; }"
+            "QPushButton {"
+            "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
+            "    stop:0 #8B5CF6, stop:1 #7C3AED);"
+            "  border: none; border-radius: 8px;"
+            "  font-size: 13px; color: #fff; font-weight: 600;"
+            "}"
+            "QPushButton:hover {"
+            "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
+            "    stop:0 #9B6DF7, stop:1 #8B5CF6);"
+            "}"
+            "QPushButton:pressed {"
+            "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
+            "    stop:0 #7C3AED, stop:1 #6D28D9);"
+            "}"
         )
         btn_save.clicked.connect(self._on_save)
         btn_row.addWidget(btn_save)
